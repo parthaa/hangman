@@ -4,21 +4,33 @@ import Char from './components/Char';
 import './App.css';
 
 class App extends Component {
-  state = {
-    secretWord: randomWord(),
-    filledWord: '',
-    guesses: [],
-    currentGuess: '',
-    guessCounter:0
-  }
   maxGuesses = 10;
+  constructor(props) {
+    super(props);
+    this.state = this.getNewState();
+  }
+
+  getNewState = () => {
+    let word = randomWord();
+    while (word.length < 5) {
+      word = randomWord();
+    }
+    return {
+      secretWord: word,
+      filledWord: '',
+      guesses: [],
+      currentGuess: '',
+      guessCounter:0
+   }
+  }
 
   inputHandler = (evt) => {
     if(evt.key.match(/^[A-Z]$/i)) {
       const props = {
-        currentGuess: evt.key,
-        guesses: this.state.guesses.slice() + [evt.key]
+        currentGuess: evt.key
       }
+
+      props.guesses=[...this.state.guesses,props.currentGuess];
 
       if(!this.state.secretWord.includes(props.currentGuess)) {
         props.guessCounter = this.state.guessCounter + 1;
@@ -62,6 +74,10 @@ class App extends Component {
     });
   }
 
+  startNewGame = () => {
+    this.setState(this.getNewState());
+  }
+
   componentWillMount() {
     document.onkeydown = this.inputHandler;
   }
@@ -71,6 +87,7 @@ class App extends Component {
   }
 
   render() {
+    let guesses = this.state.guesses;
     return (
       <div className="App">
           <p>
@@ -81,6 +98,9 @@ class App extends Component {
           </div>
           { this.boxWord() }
           { this.getStatus() }
+
+          <div> Your guesses so far: <Char character={guesses.join(", ")} /> </div> 
+          <div><button onClick={this.startNewGame}> Start New Game </button> </div> 
 
       </div>
     );
