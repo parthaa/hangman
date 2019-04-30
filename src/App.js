@@ -16,7 +16,7 @@ class App extends Component {
       word = randomWord();
     }
     return {
-      secretWord: word,
+      secretWord: word.toLowerCase(),
       filledWord: '',
       guesses: [],
       currentGuess: '',
@@ -27,7 +27,7 @@ class App extends Component {
   inputHandler = (evt) => {
     if(evt.key.match(/^[A-Z]$/i)) {
       const props = {
-        currentGuess: evt.key
+        currentGuess: evt.key.toLowerCase()
       }
 
       props.guesses=[...this.state.guesses,props.currentGuess];
