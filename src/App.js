@@ -66,6 +66,7 @@ class App extends Component {
         return(<div> Well that ain't here  But you have {remainingGuesses} chances</div> );
       }
     }
+    return (<div/>)
   }
 
   boxWord = () => {
