@@ -94,12 +94,8 @@ class App extends Component {
           <p>
              I have chosen a word with {this.state.secretWord.length} letters. Guess the word.
           </p>
-          <div>
-              Your Guess <Char character={this.state.currentGuess}/>
-          </div>
           { this.boxWord() }
           { this.getStatus() }
-
           <div> Your guesses so far: <Char character={guesses.join(", ")} /> </div> 
           <div><button onClick={this.startNewGame}> Start New Game </button> </div> 
 
