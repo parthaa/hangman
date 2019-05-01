@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import randomWord from 'random-words';
 import Char from './components/Char';
-import './App.css';
+import Keyboard from './components/Keyboard';
 
 class App extends Component {
   maxGuesses = 10;
@@ -20,14 +20,15 @@ class App extends Component {
       filledWord: '',
       guesses: [],
       currentGuess: '',
-      guessCounter:0
+      guessCounter:0,
+      showKeyboard: true
    }
   }
 
-  inputHandler = (evt) => {
-    if(evt.key.match(/^[A-Z]$/i)) {
+  updateState = (guess) => {
+    if(guess.match(/^[A-Z]$/i)) {
       const props = {
-        currentGuess: evt.key.toLowerCase()
+        currentGuess: guess.toLowerCase()
       }
 
       props.guesses=[...this.state.guesses,props.currentGuess];
@@ -39,6 +40,11 @@ class App extends Component {
       this.setState(props);
     }
   }
+
+  inputHandler = (evt) => {
+    this.updateState(evt.key);
+  }
+
 
   getFilledWord = () => {
     let filledWord = [];
@@ -75,12 +81,16 @@ class App extends Component {
     });
   }
 
+  showKeyboard = () => {
+
+
+  }
   startNewGame = () => {
-    this.setState(this.getNewState());
+    this.setState({...this.getNewState(), showKeyboard: this.state.showKeyboard});
   }
 
   componentWillMount() {
-    document.onkeydown = this.inputHandler;
+    document.onkeydown = (evt) => this.updateState(evt.key);
   }
 
   componentWillUnmount() {
@@ -89,20 +99,26 @@ class App extends Component {
 
   render() {
     let guesses = this.state.guesses;
+    let keyboard = null;
+    if(this.state.showKeyboard) {
+      keyboard = (<Keyboard clicked = {(letter) => this.updateState(letter)}/>);
+    }
     return (
-      <div className="App">
+      <div className="center">
           <p>
              I have chosen a word with {this.state.secretWord.length} letters. Guess the word.
           </p>
           { this.boxWord() }
           { this.getStatus() }
-          <div> Your guesses so far: <Char character={guesses.join(", ")} /> </div> 
-          <div><button onClick={this.startNewGame}> Start New Game </button> </div> 
+          <div> Your guesses so far: <Char character={guesses.join(", ")} /> </div>
+          <div><button onClick={this.startNewGame}> Start New Game </button>
+          <button onClick={() => this.setState({showKeyboard: !this.state.showKeyboard})}>
+            {this.state.showKeyboard ? 'Hide': 'Show'} Keyboard</button></div>
+          {keyboard}
 
       </div>
     );
   }
-
 }
 
 
