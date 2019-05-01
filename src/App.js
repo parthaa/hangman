@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import randomWord from 'random-words';
 import Char from './components/Char';
 import Keyboard from './components/Keyboard';
+import HangPortrait from './components/HangPortrait';
+
 import './App.css';
+
 class App extends Component {
-  maxGuesses = 10;
+  maxGuesses = 9;
   constructor(props) {
     super(props);
     this.state = this.getNewState();
@@ -64,12 +67,24 @@ class App extends Component {
 
     if (this.getFilledWord().join("") === this.state.secretWord) {
       return (<div> You 've guessed the word yo!! </div>);
-    } else if ( currentGuess !== '' && !this.state.secretWord.includes(currentGuess)){
+    }
+    else if ( currentGuess !== '' && !this.state.secretWord.includes(currentGuess)){
       const remainingGuesses = this.maxGuesses - this.state.guessCounter;
+
       if(remainingGuesses <= 0) {
-         return(<div> Well you used up your chances. The word was <strong>{this.state.secretWord}</strong> Reload and try again!!</div> );
+         return(
+            <div>
+                Well you used up your chances. The word was
+
+                <span><h3>{this.state.secretWord}</h3></span>
+                 Reload and try again!!
+            </div>
+          );
       } else {
-        return(<div> Well that ain't here  But you have {remainingGuesses} chances</div> );
+
+        return(<div>
+                  <span>Well that ain't here  But you have {remainingGuesses} chances</span>
+               </div> );
       }
     }
     return (<div/>)
@@ -107,6 +122,7 @@ class App extends Component {
       <div className="App">
           <p>
              I have chosen a word with {this.state.secretWord.length} letters. Guess the word.
+             Feel free to type or use the keyboard below
           </p>
           <hr/>
 
@@ -126,7 +142,8 @@ class App extends Component {
          <hr/>
 
           { this.getStatus() }
-
+          <hr/>
+          <HangPortrait index = {this.state.guessCounter}/>
 
       </div>
     );
