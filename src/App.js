@@ -36,7 +36,8 @@ class App extends Component {
 
       props.guesses=[...this.state.guesses,props.currentGuess];
 
-      if(!this.state.secretWord.includes(props.currentGuess)) {
+      if(!this.state.secretWord.includes(props.currentGuess) &&
+            !this.state.guesses.includes(props.currentGuess)) {
         props.guessCounter = this.state.guessCounter + 1;
       }
 
@@ -144,7 +145,6 @@ class App extends Component {
           { this.getStatus() }
           <hr/>
           <HangPortrait index = {this.state.guessCounter}/>
-
       </div>
     );
   }
