@@ -1,19 +1,17 @@
 import React from 'react';
 const keyboard = (props) => {
-    const keyboardLayout = ['qwertyoiup','asdfghjkl', 'zxcvbnm'];
+    const keyboardLayout = 'abcdefghijklmnopqrstuvwxyz';
     const style = {
         display: "inline-block",
         textAlign: "center",
         border: "1px solid black",
         margin: "5px",
-        padding: "16px"
+        padding: "5px"
     };
 
-    let snippets = keyboardLayout.map((row, index) => {
-        const rowSnippet = row.split('').map(letter => (<div key={letter} style={style} onClick={props.clicked.bind(this, letter)}> {letter} </div>));
-        return (<div className="row" key={index}> {rowSnippet} </div>);
-    });
-
+    let snippets = keyboardLayout.split('').map(letter =>
+        (<div key={letter} style={style} onClick={props.clicked.bind(this, letter)}> {letter} </div>)
+    );
    return (
         <div>
             {snippets}
